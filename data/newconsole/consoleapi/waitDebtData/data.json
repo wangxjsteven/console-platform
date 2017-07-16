@@ -1,0 +1,19 @@
+{
+    "code": 0,
+    "message": "操作成功",
+    "data": {
+        "pageNum": 1,
+        "pageSize": 7,
+        "pages": 1,
+        "totalRecords": 1,
+        "data": [
+            {
+                "dueamount": -8011,
+                "creditvalueamount": 80000,
+                "transfertime": 1499184000000,
+                "redeliveryamount": null,
+                "issuedamount": 88011
+            }
+        ]
+    }
+}

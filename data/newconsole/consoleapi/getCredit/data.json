@@ -1,0 +1,31 @@
+{
+    "code": 0,
+    "message": "操作成功",
+    "data": {
+        "pageNum": 1,
+        "pageSize": 15,
+        "pages": 1,
+        "totalRecords": 1,
+        "data": [
+            {
+                "creditCopyId": 11,
+                "loanTitle": "种植贷D170825-001",
+                "creditSource": "TZ",
+                "borrowerName": "张三",
+                "creditorName": null,
+                "creditAccount": null,
+                "interestDate": 1503590400000,
+                "dueDate": 1511539200000,
+                "finishTime": null,
+                "creditRate": 0.08,
+                "creditPrincipal": 0,
+                "repaymentMethods": "MYFX",
+                "waitZrTime": null,
+                "waitZrValue": null,
+                "generationTime": 1498526119000,
+                "bookTime": 1498526119000,
+                "term": 0
+            }
+        ]
+    }
+}

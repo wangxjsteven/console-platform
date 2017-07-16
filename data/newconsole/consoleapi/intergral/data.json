@@ -1,0 +1,22 @@
+{
+    "code": 0,
+    "message": "操作成功",
+    "data": {
+        "pageNum": 1,
+        "pageSize": 15,
+        "pages": 1,
+        "totalRecords": 1,
+        "data": [{
+            "id": "123",
+            "userName": "qinhua",
+            "registTime": 1498125302000,
+            "intergralType": "GET",
+            "intergralAmount": 100000,
+            "source": "水果兑换",
+            "desc": "商品名称",
+            "changeTime": 1498125302000,
+            "remark": "订单号",
+            "expireTime": 1498125302000
+        }]
+    }
+}

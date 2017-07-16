@@ -1,0 +1,40 @@
+{
+    "code": 0,
+    "message": "操作成功",
+    "data": {
+        "pageNum": 1,
+        "pageSize": 15,
+        "pages": 1,
+        "totalRecords": 4,
+        "data": [
+            {
+                "shouldRepayDate": 1498060800000,
+                "repayStatus": "WH",
+                "tradeType": "利息",
+                "repayAmount": 583.33,
+                "realRepayTime": null
+            },
+            {
+                "shouldRepayDate": 1503331200000,
+                "repayStatus": "WH",
+                "tradeType": "利息",
+                "repayAmount": 583.33,
+                "realRepayTime": null
+            },
+            {
+                "shouldRepayDate": 1506009600000,
+                "repayStatus": "WH",
+                "tradeType": "利息",
+                "repayAmount": 583.33,
+                "realRepayTime": null
+            },
+            {
+                "shouldRepayDate": 1506009600000,
+                "repayStatus": "WH",
+                "tradeType": "本金",
+                "repayAmount": 100000,
+                "realRepayTime": null
+            }
+        ]
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "code": 0,
+    "message": "操作成功",
+    "data": {
+        "resources": [
+            "sysManage:jsgl:glygl:select",
+            "busiManage:zqmk:zqgl:select",
+            "busiManage:cpgl:lcjhgl:delete",
+            "sysManage:jsgl:glygl:edit",
+            "busiManage:zqmk:zqfb:select",
+            "busiManage:cpgl:lcjhgl:edit",
+            "busiManage:cpgl:lcjhgl:add",
+            "sysManage:jsgl:glygl:delete",
+            "platformManage:overview:platformTotal:export",
+            "busiManage:cpgl:lcjhgl:release",
+            "busiManage:cpgl:lcjhgl:check",
+            "sysManage:jsgl:glygl:add",
+            "platformManage:overview:platformTotal:select",
+            "busiManage:cpgl:lcjhgl:select",
+            "busiManage:cpgl:lcjhgl:prerelease"
+        ]
+    }
+}

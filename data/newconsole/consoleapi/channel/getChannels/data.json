@@ -1,0 +1,18 @@
+{
+    "code": 0,
+    "message": "操作成功",
+    "data": {
+        "channels": {
+            "first": [
+                "APP应用市场"
+            ],
+            "second": [
+                "360助手",
+                "91助手"
+            ],
+            "third": [
+                "APP应用推广"
+            ]
+        }
+    }
+}

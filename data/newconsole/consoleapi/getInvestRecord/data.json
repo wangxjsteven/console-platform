@@ -1,0 +1,18 @@
+{
+    "code": 0,
+    "message": "操作成功",
+    "data": {
+        "pageNum": 1,
+        "pageSize": 15,
+        "pages": 1,
+        "totalRecords": 1,
+        "data": [{
+            "userName": "qinhua",
+            "idCard": "431281198908236635",
+            "annualRate": 0.07,
+            "investAmount": 100000,
+            "createTime": 1498125302000,
+            "registrationTime": 1426340835000
+        }]
+    }
+}

@@ -1,0 +1,51 @@
+{
+    "code": 0,
+    "message": "操作成功",
+    "data": {
+        "pageNum": 1,
+        "pageSize": 20,
+        "pages": 1,
+        "totalRecords": 1,
+        "data": [{
+            "channelId": 0,
+            "dimension": "APP",
+            "isPaid": "F",
+            "channel1": "APP应用市场",
+            "channel2": "360助手",
+            "channel3": "APP应用推广",
+            "channelCode": "360zhushou",
+            "startTime": 1499827574000,
+            "endTime": 1501123578000
+        }, {
+            "channelId": 0,
+            "dimension": "APP",
+            "isPaid": "F",
+            "channel1": "APP应用市场",
+            "channel2": "360助手",
+            "channel3": "APP应用推广",
+            "channelCode": "360zhushou",
+            "startTime": 1499827574000,
+            "endTime": 1501123578000
+        }, {
+            "channelId": 0,
+            "dimension": "APP",
+            "isPaid": "F",
+            "channel1": "APP应用市场",
+            "channel2": "360助手",
+            "channel3": "APP应用推广",
+            "channelCode": "360zhushou",
+            "startTime": 1499827574000,
+            "endTime": 1501123578000
+        }, {
+            "channelId": 0,
+            "dimension": "APP",
+            "isPaid": "F",
+            "channel1": "APP应用市场",
+            "channel2": "360助手",
+            "channel3": "APP应用推广",
+            "channelCode": "360zhushou",
+            "startTime": 1499827574000,
+            "endTime": 1501123578000
+        }]
+    }
+}

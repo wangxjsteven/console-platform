@@ -1,0 +1,17 @@
+{
+    "code": 0,
+    "message": "操作成功",
+    "data": {
+        "pageNum": 1,
+        "pageSize": 15,
+        "pages": 1,
+        "totalRecords": 1,
+        "data": [{
+            "date": 1498125302000,
+            "intergralAdd": 100000,
+            "intergralReduce": 100000,
+            "addMoney": 100000,
+            "reduceMoney": 100000
+        }]
+    }
+}
