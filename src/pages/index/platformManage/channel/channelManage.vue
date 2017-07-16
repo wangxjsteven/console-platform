@@ -196,13 +196,13 @@ module.exports = {
         showUploadBox: function(opts) {
             let self=this;
             // 显示上传excel弹框
-            this.dialog = {
+            this.upload = {
                 show: true,
                 ok: function() {
-                    self.dialog.show = false;
+                    self.upload.show = false;
                 },
                 cancel: function() {
-                    self.dialog.show = false;
+                    self.upload.show = false;
                 }
             };
         },
