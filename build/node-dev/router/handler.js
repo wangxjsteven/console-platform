@@ -52,6 +52,9 @@ module.exports = function(app) {
 
         request(hps.generateURI(req.url)).pipe(res);
     });
+    app.all('/newconsole/consoleapi/channel/addChannel', function(req, res, next) {
+        hps.routeToServer(req, res);
+    });
     // app.get('/newconsole/consoleapi/test', function(req, res, next) {
 
     //     request(hps.generateURI(req.url)).pipe(res);

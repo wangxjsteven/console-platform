@@ -5,15 +5,22 @@
                 <thead>
                     <slot name='customizeTh'></slot>
                     <tr>
+                        <th v-if="hasCheckbox">
+                            <p v-if="hasCheckbox">全选</p>
+                            <input v-if="hasCheckbox" type="checkbox" @change="checkAll" v-model="allChecked"/>
+                        </th>
                         <th v-if="titles.ordinal" :style="thWidth(titles)">序号</th>
                         <th v-for='(title, index) in titles.tits' :style="thWidth(titles)">{{title.name}}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-if="list&&list.length !== 0" v-for='(item, index) in list'>
+                        <td v-if="hasCheckbox">
+                            <input v-if="hasCheckbox" v-model="checkedItems" type="checkbox" @change="checkboxChange" :value="index"/>
+                        </td>
                         <td v-if="titles.ordinal">{{index + 1}}</td>
                         <template v-for="ti in titles.tits">
-                            <td v-if="!ti.filed" v-html="dataFarmat(item, ti)">
+                            <td v-if="!ti.filed" v-html="dataFormat(item, ti)">
                             </td>
                             <td v-if="ti.filed == '__checkbox'" class="vuetable-checkboxes">
                                 <input type="checkbox" @change="toggleCheckbox($event.target.checked, item, ti.filed)" :checked="rowSelected(item)">
@@ -25,15 +32,15 @@
                             </td>
                             <td v-if="ti.filed == '__buttons'">
                                 <template v-for="btn in ti.buttons">
-                                    <button class="btn-table btn-effect" @click="callAction(ti, item, index)">
-                                        {{currBtnTxt[index] || txtTrans[btn] || dataFarmat(item, ti)}}
+                                    <button v-show="power(typeof btn==='string'?btn:btn.btnPower)" class="btn-table btn-multi-table" @click="callAction(ti,btn, item, index)">
+                                        {{currBtnTxt[index] || txtTrans(typeof btn==='string'?btn:btn.name)}}
                                     </button>
                                 </template>
                             </td>
                             <td v-if="ti.filed == '__buttonsState'">
                                 <template v-for="abtn in ti.allBtn">
                                     <button v-if="power(abtn.btnPower)" class="btn-table btn-multi-table" :class="{'btn-disabled':matchStateBtn(abtn, ti.buttons, item[ti.stateName], item[ti.idName])}" @click="multBtncCallAction(abtn, ti, item)">
-                                        {{txtTrans[abtn.name]||abtn.name}}
+                                        {{txtTrans(abtn.name)}}
                                     </button>
                                 </template>
                             </td>
@@ -107,6 +114,12 @@ export default {
             default: function() {
                 return false
             }
+        },
+        hasCheckbox:{
+            type:Boolean,
+            default:function(){
+                return false;
+            }
         }
     },
     data() {
@@ -115,8 +128,10 @@ export default {
             stateStore: {},
             modifyValue: [],
             updateRate: [],
-            currBtnTxt: {},
-            txtTrans: get_tarns_text('mapping')
+            currBtnTxt: [],
+            checkedItems:[],
+            allChecked:false,
+            txtTrans: get_tarns_text
         }
     },
     computed: {
@@ -153,9 +168,6 @@ export default {
             return this.$checkAuth(type);
         },
         matchStateBtn: function(abtn, button, type, id) {
-            if (!button) {
-                return false;
-            }
             let res = button[this.definePType(type)] || button['OTHER'];
             this.stateStore[id + '-' + abtn.name] = false
             for (let item in res) {
@@ -168,12 +180,15 @@ export default {
         },
         toggleCheckbox: function(target, item, name) {
             this.$emit('checkbox', item, target)
+            this.$emit('tableEvent', {
+                type: 'checkbox',
+                value: pageNo,
+                target: item,
+                this: this
+            })
         },
         rowSelected: function(item, name) {
             return false;
-        },
-        getClass: function(css) {
-            return {};
         },
         definePType: function(type) {
             let result = '';
@@ -207,9 +222,16 @@ export default {
             return Util.accountFormat(value * 100, 2);
         },
         pageBtnClick: function(pageNo) {
+            // 老的事件回调，不要用了
             this.$emit("btnClick", pageNo);
+            // 统一的事件回调格式
+            this.$emit('tableEvent', {
+                type: 'page',
+                value: pageNo,
+                this: this
+            })
         },
-        dataFarmat: function(item, tit) {
+        dataFormat: function(item, tit) {
             let result,
                 data = item[tit.id]; //值
             if (!data && data !== 0) {
@@ -254,8 +276,9 @@ export default {
         editInput: function(item, name) {
             console.log("input");
         },
-        callAction: function(button, item, index) {
-            if (button.type === 'rate') {
+        callAction: function(title, button, item, index) {
+            // listPage.vue老代码，不要用了
+            if (title.type === 'rate') {
                 this.$set(this.modifyValue, index, !this.modifyValue[index]);
                 if (this.modifyValue[index]) { //为true显示input框
                     this.$set(this.currBtnTxt, index, '保存');
@@ -264,13 +287,42 @@ export default {
                     this.$emit('updateRateInfo', item.term, this.updateRate[index]);
                 }
             } else {
-                this.$emit(button.type, item, this);
+                this.$emit(title.type, item, this);
+            }
+            // 统一的事件回调格式
+            this.$emit('tableEvent', {
+                type: button.type || button,
+                target: item,
+                this: this
+            })
+        },
+        multBtncCallAction: function(btn, title, item) {
+            if (this.stateStore[item[title.idName] + '-' + btn.name]) {
+                // listPage.vue老代码，不要用了
+                this.$emit('multBtnAction', btn.name, item);
+                // 统一的事件回调格式
+                this.$emit('tableEvent', {
+                    type: btn.type,
+                    target: item,
+                    this: this
+                })
             }
         },
-        multBtncCallAction: function(btn, button, item) {
-            if (this.stateStore[item[button.idName] + '-' + btn.name]) {
-                this.$emit('multBtnAction', btn.name, item);
+        checkAll:function(event){
+            let that=this;
+            if(event.target.checked){
+                that.checkedItems=[];
+                this.list.forEach(function (value,index) {
+                    that.checkedItems.push(index);
+                });
             }
+            else{
+                that.checkedItems=[];
+            }
+            this.checkboxChange();
+        },
+        checkboxChange:function(){
+            this.$emit('checkboxChange',this.checkedItems);
         }
     },
     components: {
@@ -449,6 +501,9 @@ export default {
         border-radius: 2px;
         -webkit-box-shadow: inset 0 0 0 rgba(0, 0, 0, .3);
         background-color: #c1c1c1;
+    }
+    .table p{
+        margin:0;
     }
 }
 </style>

@@ -1,13 +1,14 @@
 <template>
     <div>
         <search-items :itemOptions="itemOptions" @eventHandle="searchEvent"></search-items>
-        <table-comp :pageInfo="pageInfo" :titles="tableTitle" :list="tableData" @btnClick="pageBtnClick" @eventHandle="tableEvent">
+        <table-comp :pageInfo="pageInfo" :titles="tableTitle" :list="tableData" @tableEvent="tableEvent">
         </table-comp>
     </div>
 </template>
 <script>
 import searchItems from 'components/searchItems/item.vue';
 import tableComp from 'components/table/table.vue';
+import util from 'assets/js/util.js';
 
 export default {
     components: {
@@ -20,6 +21,10 @@ export default {
             default: function() {
                 return {};
             }
+        },
+        exportDB: {
+            type: String,
+            default: ''
         },
         itemOptions: {
             type: Object,
@@ -41,9 +46,13 @@ export default {
             default: function() {
                 return {
                     pageNo: 1,
-                    pageSize: 15
+                    pageSize: 20
                 };
             }
+        },
+        refresh: {
+            type: Number,
+            default: 0
         },
         tableTitle: {
             type: Object,
@@ -70,10 +79,20 @@ export default {
             pageNo: 1
         });
     },
+    watch: {
+        'refresh': function() {
+            // 按权限检测item列表中的button是否显示
+            // this.checkBtnAuth();
+
+            this.loadTableData({
+                pageNo: 1
+            });
+        }
+    },
     methods: {
         checkBtnAuth: function() {
             let list = this.itemOptions.buttons;
-            for (var i = list.length - 1; i >= 0; i--) {
+            for (let i = list.length - 1; i >= 0; i--) {
                 list[i].btnPower = this.$checkAuth(list[i].type);
             }
         },
@@ -85,13 +104,16 @@ export default {
                 case 'refresh':
                     this.refreshBtnClick(opts.value);
                     break;
+                case 'export':
+                    window.open(this.exportDB + '?' + util.jsonBody2Str(opts.value), '_blank');
+                    break;
             }
             this.$emit('itemEvent', opts);
         },
         tableEvent: function(opts) {
             switch (opts.type) {
                 case 'page':
-                    pageBtnClick(opts);
+                    this.pageBtnClick(opts.value);
                     break;
                 case 'checkbox':
                     break;
@@ -99,8 +121,10 @@ export default {
             this.$emit('tableEvent', opts);
         },
         loadTableData: function(opts) {
-            var self = this;
+            let self = this;
             let sendData = this.searchResult = opts.data || this.searchResult;
+            opts.pageNo && (this.pageInfo.pageNo = opts.pageNo);
+            opts.pageSize && (this.pageInfo.pageSize = opts.pageSize);
 
             this.$ajax({
                 url: this.tableDB.url,
@@ -114,7 +138,7 @@ export default {
             }).then(
                 function(res) {
                     if (res.code === 0) {
-                        var data = res.data || {};
+                        let data = res.data || {};
                         self.tableData = data.data;
                         self.pageInfo.pageCurr = data.pageNum || self.pageInfo.pageCurr;
                         self.pageInfo.pagesCount = data.pages || self.pageInfo.pagesCount;

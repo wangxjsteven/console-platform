@@ -54,6 +54,8 @@ var buttonLimit = {
                     switch (type) {
                         case 'select':
                             return true;
+                        case 'view':
+                            return true;
                         case 'search':
                             return true;
                         case 'refresh':

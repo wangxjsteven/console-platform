@@ -117,6 +117,19 @@ const util = function(win) {
             win.location.href = jumpUrl;
     };
 
+    /**跳转页面*/
+    util.jsonBody2Str = function(json, type) {
+        var str = "";
+        for (var p in json) {
+            var value = json[p];
+
+            value = type !== 'POST' ? encodeURIComponent(value) : value;
+
+            str += "&" + p + "=" + value;
+        }
+        return str.substr(1);
+    };
+
     /**
      * 公用请求ajax的方式
      * */

@@ -2,17 +2,94 @@
     "code": 0,
     "message": "操作成功",
     "data": {
-        "channels": {
-            "first": [
-                "APP应用市场"
-            ],
-            "second": [
-                "360助手",
-                "91助手"
-            ],
-            "third": [
-                "APP应用推广"
-            ]
-        }
+        "channels": [{
+            "text": "pc",
+            "value": "pc",
+            "children": [{
+                "children": [{
+                    "text": "2",
+                    "value": "2",
+                    "children": [{
+                        "text": "3",
+                        "value": "3"
+                    }]
+                }],
+                "text": "1",
+                "value": "1"
+            }, {
+                "children": [{
+                    "text": "360助手",
+                    "value": "360助手",
+                    "children": [{
+                        "text": "APP应用推广",
+                        "value": "APP应用推广"
+                    }]
+                }, {
+                    "text": "91助手",
+                    "value": "91助手",
+                    "children": [{
+                        "text": "APP应用推广",
+                        "value": "APP应用推广"
+                    }]
+                }],
+                "text": "APP应用市场",
+                "value": "APP应用市场"
+            }, {
+                "children": [{
+                    "text": "91",
+                    "value": "91",
+                    "children": [{
+                        "text": "傻",
+                        "value": "傻"
+                    }]
+                }],
+                "text": "助手",
+                "value": "助手"
+            }]
+        }, {
+            "text": "H5",
+            "value": "H5",
+            "children": [{
+                "children": [{
+                    "text": "H5-2",
+                    "value": "H5-2",
+                    "children": [{
+                        "text": "H5-3",
+                        "value": "H5-3"
+                    }]
+                }],
+                "text": "H5-1",
+                "value": "H5-1"
+            }, {
+                "children": [{
+                    "text": "H5-360助手",
+                    "value": "H5-360助手",
+                    "children": [{
+                        "text": "H5-APP应用推广",
+                        "value": "H5-APP应用推广"
+                    }]
+                }, {
+                    "text": "H5-91助手",
+                    "value": "H5-91助手",
+                    "children": [{
+                        "text": "H5-APP应用推广",
+                        "value": "H5-APP应用推广"
+                    }]
+                }],
+                "text": "H5-APP应用市场",
+                "value": "H5-APP应用市场"
+            }, {
+                "children": [{
+                    "text": "H5-91",
+                    "value": "H5-91",
+                    "children": [{
+                        "text": "H5-傻",
+                        "value": "H5-傻"
+                    }]
+                }],
+                "text": "H5-助手",
+                "value": "H5-助手"
+            }]
+        }]
     }
 }

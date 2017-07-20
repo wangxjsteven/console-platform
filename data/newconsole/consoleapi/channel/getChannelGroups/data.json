@@ -1,4 +1,16 @@
 {
-    "code": 123,
-    "message": "本地没有数据，请先执行数据录制"
+    "code": 0,
+    "message": "操作成功",
+    "data": {
+        "pageNum": 0,
+        "pageSize": 0,
+        "pages": 0,
+        "totalRecords": 0,
+        "data": [{
+            "groupId": 1,
+            "groupName": "zhushou",
+            "childrenNum": 2,
+            "remark": "助手组"
+        }]
+    }
 }

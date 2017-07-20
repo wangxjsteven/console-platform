@@ -52,6 +52,7 @@ function direct(req, callback) {
     //发起request请求
     request(options, function(e, response, body) {
         var status, data = body;
+        // console.log(response);
         if (e) {
             callback(e);
             return;

@@ -1,7 +1,8 @@
 <template>
-    <vodal measure="em" :show="show" :mask="mask" :animation="animation" :width="28.5" :height="17" :duration="301" className="md-upload-dialog" @hide="hide">
-            <div class="header">{{title}}</div>
-        <vue-clip :options='clipOptions'>
+    <vodal measure="em" :show="show" :mask="mask" :animation="animation" :width="28.5" :height="17" :duration="301" className="md-upload-dialog" @hide="operate">
+        <div class="header">{{title}}</div>
+        <slot></slot>
+        <vue-clip :options='clipOptions' :on-sending="sending">
             <template slot="clip-uploader-action">
                 <div>
                     <div class="dz-message">
@@ -10,15 +11,16 @@
                 </div>
             </template>
             <template slot="clip-uploader-body" scope="props">
+            <div class="md-upload-files">
                 <div v-for="file in props.files">
                     <img v-bind:src="file.dataUrl" /> {{ file.name }} {{ file.status }}
+                </div>
                 </div>
             </template>
         </vue-clip>
         <div class="md-upload-buttons">
-            <button class="btn btn-primary" @click="operate('ok')">导入</button>
-            <button class="btn btn-primary" @click="operate('downModel')">下载模版</button>
-            <button class="btn btn-default" @click="operate">取消</button>
+            <button class="btn btn-primary" @click="operate('down')">下载模版</button>
+            <button class="btn btn-default" v-if='modelUrl' @click="operate('cancel')">取消</button>
         </div>
     </vodal>
 </template>
@@ -35,34 +37,24 @@ export default {
             type: Object,
             default: function() {
                 return {
-                    url: '/upload',
-                    paramName: 'file'
+                    url: '',
+                    paramName: 'file',
+                    params: null
                 }
             }
         },
+        modelUrl: '',
         show: {
             type: Boolean,
             default: false
         },
         mask: {
             type: Boolean,
-            default: true
-        },
-        type: {
-            type: String,
-            default: ''
+            default: false
         },
         title: {
             type: String,
-            default: '提醒'
-        },
-        html: {
-            type: String,
-            default: ''
-        },
-        message: {
-            type: String,
-            default: '无提示消息'
+            default: '上传'
         }
     },
     components: {
@@ -76,19 +68,30 @@ export default {
         }
     },
     methods: {
-        hide: function(type) {
+        sending: function(file, xhr, formData) {
+            // let params = this.clipOptions.params;
+            // if (params) {
+            //     for (let name in params) {
+            //         formData.append(name, params[name])
+            //     }
+            // }
+        },
+        complete: function(file, xhr, formData) {
+            // let params = this.clipOptions.params;
+            // if (params) {
+            //     for (let name in params) {
+            //         formData.append(name, params[name])
+            //     }
+            // }
         },
         operate: function(type) {
-            clearTimeout(timer);
             this.$emit('uploadEvent', type || '');
-            switch(type){
-                case 'ok':
+            switch (type) {
+                case 'down':
+                    window.open(this.modelUrl, '_blank');
                     break;
-                    case 'down':
-                    break;
-                    default:
-            this.$emit('hide', type || 'cancel');
-
+                default:
+                    this.$emit('hide', type || 'cancel');
             }
         }
     }
@@ -97,7 +100,7 @@ export default {
 <style lang='sass'>
 @import '../model/style/zoom.css';
 @import '../model/style/door.css';
-.md-upload-dialog{
+.md-upload-dialog {
 
     /* -- title -- */
     .header {
@@ -106,17 +109,23 @@ export default {
         padding-bottom: 10px;
         border-bottom: 1px solid #e9e9e9;
     }
-    .dz-message{
+    .dz-message {
+        margin-top: 10px;
         background: #5d91e5;
         color: #fff;
         text-align: center;
-        padding:20px;
+        padding: 20px;
         width: 100%;
         cursor: pointer;
     }
-    .md-upload-buttons{
+    .md-upload-files {
+        height: 70px;
+        overflow: auto;
+    }
+    .md-upload-buttons {
         position: absolute;
         bottom: 16px;
+        right: 15px;
     }
 }
 </style>

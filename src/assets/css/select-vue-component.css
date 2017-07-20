@@ -1,25 +1,26 @@
 @charset "UTF-8";
-body,div,section,ul,li,p,img,dl,dt,dd,table,tr,td,input,button,h1,h2,h3,h4,h5,h6,fieldset{margin: 0px;padding: 0px;font-family: "Microsoft Yahei";}
-input{
-	border: 1px solid #ccc;
-	outline:0;
-	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-}
+.functional-select-wrapper{
+	input{
+		border: 1px solid #ccc;
+		outline:0;
+		transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+	}
 
-input:focus,select:focus,textarea:focus{
-	border-color: rgba(82,168,236,.8);
-	box-shadow: 0 0 8px rgba(82,168,236,.6);
-}
+	input:focus,select:focus,textarea:focus{
+		border-color: rgba(82,168,236,.8);
+		box-shadow: 0 0 8px rgba(82,168,236,.6);
+	}
 
-.clearfix:after {content: "."; height: 0px; display: block; clear: both; visibility: hidden;}
+	.clearfix:after {content: "."; height: 0px; display: block; clear: both; visibility: hidden;}
 
-h3{
-	margin: 20px;
-}
+	h3{
+		margin: 20px;
+	}
 
-.wrapper{
-	width: 800px;
-	margin: 20px 0px 50px 20px;
+	.wrapper{
+		width: 800px;
+		margin: 20px 0px 50px 20px;
+	}
 }
 
 /*功能下拉框 整体壁纸*/

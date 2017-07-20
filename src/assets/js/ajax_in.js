@@ -61,14 +61,9 @@ var ajax = {
                                 return JSON.stringify(data);
                             }],
                             params: opts.method === 'get' || opts.type === 'get' ? opts.data : null,
-                            method: opts.method || opts.type,
+                            method: opts.method || opts.type || 'get',
                             responseType: 'json',
-                            headers: opts.requestType !== 'form' ? {
-                                'x-console-json': 'true',
-                                'Content-Type': 'application/json'
-                            } : {
-                                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-                            }
+                            headers: opts.headers || getHeaders(opts.requestType)
                         }, opts);
                         self.axios(config).then(function(response) {
                             var data = response.data,
@@ -111,5 +106,23 @@ var ajax = {
         });
     }
 };
+
+function getHeaders(type) {
+    switch (type) {
+        case 'form':
+            return {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+            }
+        case 'json':
+        case '':
+            return {
+                'x-console-json': 'true',
+                'Content-Type': 'application/json'
+            }
+        case 'file':
+        default:
+            return null;
+    }
+}
 
 module.exports = ajax;

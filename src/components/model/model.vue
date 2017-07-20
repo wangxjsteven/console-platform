@@ -49,10 +49,6 @@ export default {
             type: String,
             default: '提醒'
         },
-        html: {
-            type: String,
-            default: ''
-        },
         message: {
             type: String,
             default: '无提示消息'

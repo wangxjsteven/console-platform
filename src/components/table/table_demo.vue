@@ -1,65 +1,67 @@
 <style lang="sass">
-.column {
-    display: block;
-    -ms-flex-preferred-size: 0;
-    flex-basis: 0;
-    -ms-flex-positive: 1;
-    flex-grow: 1;
-    -ms-flex-negative: 1;
-    flex-shrink: 1;
-    padding-top: 5px;
-    p {
-        margin: 0;
-    }
-    .control {
-        position: relative;
-        text-align: left;
-        &.has-addons {
-            display: inline-block;
+.md-table-demo{
+    .column {
+        display: block;
+        -ms-flex-preferred-size: 0;
+        flex-basis: 0;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+        -ms-flex-negative: 1;
+        flex-shrink: 1;
+        padding-top: 5px;
+        p {
+            margin: 0;
+        }
+        .control {
+            position: relative;
+            text-align: left;
+            &.has-addons {
+                display: inline-block;
+            }
+        }
+        input,
+        select {
+            //border-radius: 0 3px 3px 0;
+            width: 150px;
+            height: 24px;
+        }
+        label {
+            width: 100px;
+            margin-bottom: 0;
+            line-height: 24px;
+            font-size: 14px;
+            font-weight: normal;
+            text-align: right;
+            margin-right: 10px;
         }
     }
-    input,
-    select {
-        //border-radius: 0 3px 3px 0;
-        width: 150px;
-        height: 24px;
+
+    .buttons {
+        margin: 15px 0;
+        .btn-search {
+            margin: 0 10px 0 44px;
+        }
     }
-    label {
-        width: 100px;
-        margin-bottom: 0;
-        line-height: 24px;
-        font-size: 14px;
-        font-weight: normal;
-        text-align: right;
-        margin-right: 10px;
+
+    .total-money {
+        color: #f00;
     }
-}
 
-.buttons {
-    margin: 15px 0;
-    .btn-search {
-        margin: 0 10px 0 44px;
+    .debt-money {
+        margin-right: 20px;
     }
-}
 
-.total-money {
-    color: #f00;
-}
+    .page-bar {
+        display: inline-block;
+    }
 
-.debt-money {
-    margin-right: 20px;
-}
-
-.page-bar {
-    display: inline-block;
-}
-
-.fa {
-    margin-right: 5px;
+    .fa {
+        margin-right: 5px;
+    }
 }
 </style>
 <template>
-    <div class="container-section col-sm-11 col-md-12" id="containerSection">
+    <div class="container-section col-sm-11 col-md-12 md-table-demo" id="containerSection">
         <page-head p-title="业务管理&nbsp;&nbsp;/&nbsp;&nbsp;债权管理/&nbsp;&nbsp;真实债券管理"></page-head>
         <div class="search-items">
             <div class="columns">

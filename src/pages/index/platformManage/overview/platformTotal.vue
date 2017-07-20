@@ -1,76 +1,77 @@
 <style lang="sass">
-.column {
-    display: block;
-    -ms-flex-preferred-size: 0;
-    flex-basis: 0;
-    -ms-flex-positive: 1;
-    flex-grow: 1;
-    -ms-flex-negative: 1;
-    flex-shrink: 1;
-    padding-top: 5px;
-    margin-bottom: 15px;
-    p {
-        margin: 0;
-    }
-    .control {
-        position: relative;
-        text-align: left;
-        &.has-addons {
-            display: inline-block;
+.md-platform-total {
+    .column {
+        display: block;
+        -ms-flex-preferred-size: 0;
+        flex-basis: 0;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+        -ms-flex-negative: 1;
+        flex-shrink: 1;
+        padding-top: 5px;
+        margin-bottom: 15px;
+        p {
+            margin: 0;
+        }
+        .control {
+            position: relative;
+            text-align: left;
+            &.has-addons {
+                display: inline-block;
+            }
+        }
+        input,
+        select {
+            //border-radius: 0 3px 3px 0;
+            width: 150px;
+            height: 24px;
+        }
+        label {
+            width: 100px;
+            margin-bottom: 0;
+            line-height: 24px;
+            font-size: 14px;
+            font-weight: normal;
+            text-align: right;
+            margin-right: 10px;
         }
     }
-    input,
-    select {
-        //border-radius: 0 3px 3px 0;
-        width: 150px;
-        height: 24px;
+    .buttons {
+        margin: 15px 0;
+        .btn-search {
+            margin: 0 10px 0 44px;
+        }
     }
-    label {
-        width: 100px;
-        margin-bottom: 0;
-        line-height: 24px;
-        font-size: 14px;
-        font-weight: normal;
-        text-align: right;
-        margin-right: 10px;
+
+    .total-money {
+        color: #f00;
     }
-}
-.buttons {
-    margin: 15px 0;
-    .btn-search {
-        margin: 0 10px 0 44px;
+
+    .debt-money {
+        margin-right: 20px;
     }
-}
 
-.total-money {
-    color: #f00;
-}
+    .page-bar {
+        display: inline-block;
+    }
 
-.debt-money {
-    margin-right: 20px;
-}
-
-.page-bar {
-    display: inline-block;
-}
-
-.fa {
-    margin-right: 5px;
-}
-.bolock-diliver{
-    height: 50px;
-}
-.main-table th:first-child{
-    border:none;
-}
-.no-boder{
-    border:none;
+    .fa {
+        margin-right: 5px;
+    }
+    .bolock-diliver {
+        height: 50px;
+    }
+    .main-table th:first-child {
+        border: none;
+    }
+    .no-boder {
+        border: none;
+    }
 }
 </style>
 <template>
-    <div class="container-section col-sm-11 col-md-12" id="containerSection">
+    <div class="container-section col-sm-11 col-md-12 md-platform-total" id="containerSection">
         <page-head></page-head>
-
         <div class="search-items">
             <div class="column">
                 <div class="control has-addons">
@@ -88,14 +89,12 @@
         <table-comp :server="latestTable.tableDB" :titles="tableTitle" :filter="latestTable.tableFilter" :list="latestTable.tableData" :pageshide="latestTable.pageshide">
             <tr slot="customizeTh">
                 <th class="no-boder"></th>
-                <th ></th>
+                <th></th>
                 <th colspan="5">总况</th>
                 <th colspan="8">产品成交</th>
             </tr>
         </table-comp>
-        
         <div class="bolock-diliver"></div>
-
         <div class="search-items">
             <div class="columns">
                 <div class="column">
@@ -112,9 +111,9 @@
                         <label class="button is-info">平台</label>
                         <div class="btn-group">
                             <button type="button" class="btn btn-default" v-for="item in platforms" :class="{'btn-primary': searchTable.platform === item.platform}" @click="searchTable.platform = item.platform;">{{item.name}}</button>
-                        </div>                        
+                        </div>
                     </div>
-                    <div class="buttons">                        
+                    <div class="buttons">
                         <button class="btn btn-primary btn-search" @click="loadPaginationData2(1)"><i class="fa fa-search"></i>搜 索</button>
                         <button class="btn btn-primary" @click="detailsOut"><i class="fa fa-sign-out"></i>导出CSV</button>
                     </div>
@@ -131,7 +130,6 @@
     </div>
 </template>
 <script>
-
 import pageHead from '@/components/pageHead.vue';
 import tableComp from '@/components/table/table.vue';
 import tableComp2 from '@/components/table/table.vue';
@@ -146,8 +144,7 @@ export default {
     data: function() {
         that = this;
         return {
-            platforms:[
-                {
+            platforms: [{
                     name: '全部',
                     platform: 'all'
                 },
@@ -168,8 +165,7 @@ export default {
                     platform: 'xt'
                 }
             ],
-            dataTypes:[
-                {
+            dataTypes: [{
                     name: '  天  ',
                     type: 'day'
                 },
@@ -179,12 +175,11 @@ export default {
                 }
             ],
             tableTitle: {
-                ordinal: false,//配置序号是否展示
-                tits: [
-                {
+                ordinal: false, //配置序号是否展示
+                tits: [{
                     name: "时点",
                     id: 'show_time'
-                },{
+                }, {
                     name: "累计注册用户数",
                     id: 'total_registraters'
                 }, {
@@ -227,38 +222,36 @@ export default {
             },
             latestTable: {
                 platform: 'all',
-                pageshide:1,
-                tableFilter: {                
-                },
+                pageshide: 1,
+                tableFilter: {},
                 tableDB: {
                     url: '/newconsole/consoleapi/dataplatform/realTime',
                     type: 'get'
                 },
-                allInfo: undefined,//所有的数据
-                realTime: undefined,//实时时间
-                tableData:[],
+                allInfo: undefined, //所有的数据
+                realTime: undefined, //实时时间
+                tableData: [],
             },
             searchTable: {
                 platform: 'all',
-                pageInfo:{   
+                pageInfo: {
                     pageCurr: 1,
-                    pagesCount: 1  
+                    pagesCount: 1
                 },
                 dateFrom: '',
                 dateTo: '',
-                tableFilter: {                
-                },
+                tableFilter: {},
                 dateType: 'day',
                 tableDB: {
                     url: '/newconsole/consoleapi/dataplatform/dataDetails',
                     type: 'get'
                 },
-                tableData:[]
+                tableData: []
             },
-            outport:{
+            outport: {
                 url: '/newconsole/consoleapi/dataplatform/exportDataDetails',
                 type: 'post'
-            }           
+            }
         }
     },
     watch: {
@@ -281,19 +274,19 @@ export default {
             this.searchTable.dateTo = date;
         },
         loadPaginationData: function(pageNo, resolve, addcomponent) {
-            if(!that.latestTable.allInfo){//第一次需要从远程拉取数据
+            if (!that.latestTable.allInfo) { //第一次需要从远程拉取数据
                 new Ajax({
                     url: this.latestTable.tableDB.url,
                     method: this.latestTable.tableDB.type,
                     dataType: 'json',
-                    data:{
+                    data: {
                         pageNo: pageNo,
                         pageSize: PAGE_SIZE
                     },
                     success: function(data) {
                         var tableInfo = that.latestTable;
                         tableInfo.allInfo = data.realTimesData;
-                        tableInfo.realTime = Util.dateFormat((new Date(tableInfo.allInfo.realTime)),"yyyy年MM月d日 h:m:s");
+                        tableInfo.realTime = Util.dateFormat((new Date(tableInfo.allInfo.realTime)), "yyyy年MM月d日 h:m:s");
                         tableInfo.tableData = tableInfo.allInfo.all;
                         tableInfo.tableData[0].show_time = '今日';
                         tableInfo.tableData[1].show_time = '昨日';
@@ -311,7 +304,7 @@ export default {
                             err);
                     }
                 });
-            }else{
+            } else {
                 var tableInfo = that.latestTable;
                 tableInfo.tableData = tableInfo.allInfo[that.latestTable.platform];
                 tableInfo.tableData[0].show_time = '今日';
@@ -320,28 +313,28 @@ export default {
             }
         },
         loadPaginationData2: function(pageNo, resolve, addcomponent) {
-            function creatFormat(){
-                return that.searchTable.dataType === 'day'?
-                    function(time){
-                        return Util.dateFormat((new Date(time)),"yyyy-MM-d");
-                    }:
-                    function(time){
-                        return Util.dateFormat((new Date(time)),"hh点");
+            function creatFormat() {
+                return that.searchTable.dataType === 'day' ?
+                    function(time) {
+                        return Util.dateFormat((new Date(time)), "yyyy-MM-d");
+                    } :
+                    function(time) {
+                        return Util.dateFormat((new Date(time)), "hh点");
                     };
             }
-            if(this.searchTable.dateFrom > this.searchTable.dateTo){
+            if (this.searchTable.dateFrom > this.searchTable.dateTo) {
                 alert("开始日期大于结束日期，请重新选择！");
                 return;
-            }else if(this.searchTable.dateFrom === this.searchTable.dateTo){
+            } else if (this.searchTable.dateFrom === this.searchTable.dateTo) {
                 that.searchTable.dataType = 'hour';
-            }else{
+            } else {
                 that.searchTable.dataType = 'day';
             }
             new Ajax({
                 url: this.searchTable.tableDB.url,
                 method: this.searchTable.tableDB.type,
                 dataType: 'json',
-                data:{
+                data: {
                     currentPage: pageNo,
                     pageSize: PAGE_SIZE,
                     platform: this.searchTable.platform,
@@ -351,14 +344,14 @@ export default {
                 success: function(data) {
                     var format = creatFormat(),
                         tables;
-                    that.searchTable.tableData=data.dataDetails;
+                    that.searchTable.tableData = data.dataDetails;
                     tables = that.searchTable;
-                    tables.pageInfo = {   
+                    tables.pageInfo = {
                         pageCurr: data.pages.pageNum,
-                        pagesCount: data.pages.pages  
+                        pagesCount: data.pages.pages
                     };
 
-                    for(var i = 0, items = tables.tableData, max = items.length; i < max; i++ ){
+                    for (var i = 0, items = tables.tableData, max = items.length; i < max; i++) {
                         items[i].show_time = format(items[i].createTime);
                     }
                     addcomponent && require(['@/components/table/table.vue'], resolve);
@@ -388,11 +381,11 @@ export default {
             }
             this.userlist = this.seachResult;
         },
-        detailsOut: function(){
-            var str = 'type=' + (this.searchTable.dateFrom === this.searchTable.dateTo? 'hour': 'day')
-                + '&source=' + this.searchTable.platform
-                + '&startTime=' + this.searchTable.dateFrom
-                + '&endTime=' + this.searchTable.dateTo;
+        detailsOut: function() {
+            var str = 'type=' + (this.searchTable.dateFrom === this.searchTable.dateTo ? 'hour' : 'day') +
+                '&source=' + this.searchTable.platform +
+                '&startTime=' + this.searchTable.dateFrom +
+                '&endTime=' + this.searchTable.dateTo;
             window.location = this.outport.url + '?' + str;
             // new Ajax({
             //     url: this.outport.url,
@@ -404,7 +397,7 @@ export default {
             //         endTime: this.searchTable.dateTo
             //     },
             //     success: function(data) {
-                    
+
             //     },
             //     dataError: function(code, err) {
             //         if (code === 1003) {
@@ -437,5 +430,4 @@ export default {
         }
     },
 }
-
 </script>

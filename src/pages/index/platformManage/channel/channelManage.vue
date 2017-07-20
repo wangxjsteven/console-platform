@@ -1,28 +1,14 @@
-<style>
-.main-section {
-    color: green;
-}
-</style>
 <template>
     <div>
-        <table-page :tableDB='tableDB' :itemOptions='itemOptions' :tableTitle='tableTitle' @itemEvent='itemEvent' @tabelEvent='tableHandle'></table-page>
-        <upload :show="upload.show" type="free" @hide='upload.cancel'>
-            <!-- <div class="dd-content">
-                <label for="exampleInputFile">{{upload.title}}</label>
-                <input type="file" id="exampleInputFile">
-                <p class="help-block">{{upload.desc}}</p>
-            </div> -->
-            <!-- <vue-clip :options='clipOptions'></vue-clip>
-            <div class="dd-buttons">
-                <button class="btn btn-primary" @click="upload.ok">导入</button>
-                <button class="btn btn-default" @click="upload.cancel">取消</button>
-            </div> -->
+        <table-page :tableDB='tableDB' :itemOptions='itemOptions' :tableTitle='tableTitle' :exportDB='exportDB' :refresh='refreshTableFlag' @itemEvent='itemEvent' @tabelEvent='tableHandle'>
+        </table-page>
+        <upload :show="upload.show" :clipOptions='clipOptions' :modelUrl='modelUrl' @hide='upload.show=false' @uploadEvent='uploadEvent'>
         </upload>
     </div>
 </template>
 <script>
 import pageHead from 'components/pageHead';
-import upload from 'components/upload/uploadBox.vue';
+import upload from 'components/upload/uploadSingle.vue';
 import tablePage from 'components/tablePage/tablePage.vue'
 module.exports = {
     data: function() {
@@ -30,14 +16,7 @@ module.exports = {
         return {
             upload: {
                 show: false,
-                title: '',
-                message: '',
-                html: '',
-                type: '',
-                ok: function() {},
-                cancel: function() {},
-                hidetime: 0,
-                autohide: false,
+                title: ''
             },
             tableDB: {
                 url: '/newconsole/consoleapi/channel/channelManage',
@@ -47,11 +26,17 @@ module.exports = {
                 url: '/newconsole/consoleapi/channel/getChannels',
                 method: 'post'
             },
-            exportDB: {
-                url: '/newconsole/consoleapi/channel/exportChannel',
-                method: 'post'
+            exportDB: '/newconsole/consoleapi/channel/exportChannel',
+            clipOptions: {
+                url: '/newconsole/consoleapi/channel/addChannel',
+                paramName: 'file',
+                params: {
+                    groupId: 1
+                }
             },
-            clipOptions: { url: '/newconsole/consoleapi/channel/uploadExcel', paramName: 'file' },
+            modelUrl: "http://nfd-filestore-public.oss-cn-shenzhen.aliyuncs.com/excelTemplate/channelManage/addChannel.xls",
+
+            refreshTableFlag: 0,
             itemOptions: {
                 colCount: 3,
                 wrap: true,
@@ -59,6 +44,21 @@ module.exports = {
                     name: "渠道码",
                     id: 'channelCode',
                     type: 'text',
+                    value: ''
+                }, {
+                    name: "是否付费",
+                    id: 'isPaid',
+                    type: 'select',
+                    option: [{
+                        text: '全部',
+                        value: ''
+                    }, {
+                        text: '是',
+                        value: 'S'
+                    }, {
+                        text: '否',
+                        value: 'F'
+                    }],
                     value: ''
                 }, {
                     name: "平台纬度",
@@ -82,21 +82,6 @@ module.exports = {
                     }],
                     value: ''
                 }, {
-                    name: "是否付费",
-                    id: 'isPaid',
-                    type: 'select',
-                    option: [{
-                        text: '全部',
-                        value: ''
-                    }, {
-                        text: '是',
-                        value: 'S'
-                    }, {
-                        text: '否',
-                        value: 'F'
-                    }],
-                    value: ''
-                }, {
                     name: "一级渠道",
                     id: 'channel1',
                     type: 'select',
@@ -105,9 +90,9 @@ module.exports = {
                 }, {
                     name: "二级渠道",
                     id: 'channel2',
-                    type: 'select-multi',
+                    type: 'select',
                     option: [],
-                    value: []
+                    value: ''
                 }, {
                     name: "三级渠道",
                     id: 'channel3',
@@ -172,38 +157,41 @@ module.exports = {
     methods: {
         itemEvent: function(opts) {
             switch (opts.type) {
+                case 'selected':
+                    if (opts.item.id === 'dimension' || opts.item.id.indexOf('channel') > -1) {
+                        this.channelSelect(opts);
+                    }
+                    break;
                 case 'multiple-selected':
-                    this.channelSelect(opts.value);
+                    this.channelSelect(opts);
                     break;
                 case 'export':
-                    this.downloadList(opts.value);
+                    // this.downloadList(opts.value);
                     break;
                 case 'add':
                     this.showUploadBox(opts.value);
                     break;
             }
         },
+        uploadEvent: function(opts) {
+            switch (opts.type) {
+                case 'success':
+                    this.refreshTableFlag = +new Date();
+                    break;
+            }
+        },
         tableHandle: function(opts) {
             switch (opts.type) {
-                case 'multiple-selected':
-                    this.channelSelect(opts.value);
-                    break;
                 case 'export':
                     this.downloadList(opts.value);
                     break;
             }
         },
         showUploadBox: function(opts) {
-            let self=this;
+            let self = this;
             // 显示上传excel弹框
             this.upload = {
-                show: true,
-                ok: function() {
-                    self.upload.show = false;
-                },
-                cancel: function() {
-                    self.upload.show = false;
-                }
+                show: true
             };
         },
         getChannels: function(opts) {
@@ -215,33 +203,53 @@ module.exports = {
                 if (res.code !== 0) {
                     return false;
                 }
-                let channelMap = {
-                    channel1: 'first',
-                    channel2: 'second',
-                    channel3: 'third'
-                };
                 self.channels = res.data.channels
-                for (let i in channelMap) {
-                    self.$set(self.getChannel(i),
-                        'option',
-                        self.transChannelData(self.channels[channelMap[i]]))
-                    self.$set(self.getChannel(i),
-                        'value', [])
-                }
+                self.setDefault(self.channels);
             })
         },
-        transChannelData: function(channels) {
-            let result = [];
-            for (let i = 0, len = channels.length; i < len; i++) {
-                let chl = channels[i];
-                result.push({
-                    'value': chl,
-                    'text': chl
-                })
+        setDefault: function(list) {
+            this.channels.unshift({
+                text: '全部',
+                value: '',
+                children: [{
+                    text: '全部',
+                    value: '',
+                    children: [{
+                        text: '全部',
+                        value: '',
+                        children: []
+                    }]
+                }]
+            })
+            let index = 0,
+                channel = null,
+                channels = this.channels,
+                ids = ['dimension', 'channel1', 'channel2', 'channel3'];
+            while (index < 4) {
+                let name = ids[index];
+                ++index;
+                channel = channels[0];
+                this.$set(this.getOption(name),
+                    'option',
+                    channels)
+                // 第三级是多选框，默认value是空数组
+                this.$set(this.getOption(name),
+                    'value', index < 4 ? '' : [])
+                channel && (channels = channel.children)
+            }
+        },
+        setItemsValue: function(selectItems) {
+            let items = this.itemOptions.searchItems,
+                result = [];
+            for (let name in items) {
+                let item = items[name],
+                    id = item.id;
+                item.value = typeof selectItems[id] === 'undefined' ? item.value : selectItems[id]
+                result.push(item);
             }
             return result;
         },
-        getChannel: function(type) {
+        getOption: function(type) {
             let items = this.itemOptions.searchItems;
             for (let i = items.length - 1; i >= 0; i--) {
                 let item = items[i]
@@ -250,79 +258,56 @@ module.exports = {
                 }
             }
         },
-        setChannelOption: function(name, value) {
-            this.$set(this.getChannel(name), 'option', value);
+        setOption: function(name, opts) {
+            let value = opts || [];
+            if (!value[0] || value[0].value !== '') {
+                value.unshift({
+                    text: '全部',
+                    value: ''
+                })
+            }
+            this.$set(this.getOption(name), 'option', value);
         },
-        setChannelValue: function(name, value) {
-            this.$set(this.getChannel(name), 'value', value);
+        setValue: function(name, value) {
+            this.$set(this.getOption(name), 'value', value);
         },
-        setItemsValue: function(selectItems) {
-            let items = this.itemOptions.searchItems,
-                result = [];
-            for (let name in items) {
-                let item = items[name];
-                for (let id in selectItems) {
-                    if (item.id === id) {
-                        item.value = (selectItems[id] || item.value)
-                        result.push(item);
-                    }
+        getChannel: function(optId, channelId) {
+            let list = this.getOption(optId).option
+            for (let i = list.length - 1; i >= 0; i--) {
+                let channel = list[i]
+                if (channelId === channel.value) {
+                    return channel;
                 }
             }
-            return result;
         },
         channelSelect: function(opts) {
-            let self = this;
             let id = opts.id;
-            this.itemOptions.searchItems = this.setItemsValue(opts);
-            // switch (id) {
-            //     case 'channel1':
-            //         if (self.getChannel(id).option !== opts.data) {
-            //             self.getChannel(id).option = opts.data;
-            //             self.setChannelOption('channel2', []);
-            //             self.setChannelValue('channel2', []);
-            //             self.setChannelOption('channel3', []);
-            //             self.setChannelValue('channel3', []);
-            //         }
-            //         break;
-            //     case 'channel2':
-            //         if (self.getChannel(id).option !== opts.data) {
-            //             self.getChannel(id).option = opts.data;
-            //             self.setChannelOption('channel3', []);
-            //             self.setChannelValue('channel3', []);
-            //         }
-            //         break;
-            //     case 'channel3':
-            //         if (self.getChannel(id).option !== opts.data) {
-            //             self.getChannel(id).option = opts.data;
-            //         }
-            //         break;
-            // }
+            this.itemOptions.searchItems = this.setItemsValue(opts.value);
+            switch (id) {
+                case 'dimension':
+                    this.setOption('channel1', this.getChannel('dimension', opts.value['dimension']).children);
+                    this.setValue('channel1', '');
+                    this.setOption('channel2', []);
+                    this.setValue('channel2', '');
+                    this.setOption('channel3', []);
+                    this.setValue('channel3', []);
+                    break;
+                case 'channel1':
+                    this.setOption('channel2', this.getChannel('channel1', opts.value['channel1']).children);
+                    this.setValue('channel2', '');
+                    this.setOption('channel3', []);
+                    this.setValue('channel3', []);
+                    break;
+                case 'channel2':
+                    this.setOption('channel3', this.getChannel('channel2', opts.value['channel2']) ? this.getChannel('channel2', opts.value['channel2']).children : []);
+                    this.setValue('channel3', []);
+                    break;
+            }
         },
         downloadList: function(opts) {
             var self = this;
             let sendData = this.searchResult = opts.data || this.searchResult;
-            window.open('/public/excel/channel.xlsx', '_blank')
-            // this.$ajax({
-            //     url: this.exportDB.url,
-            //     method: this.exportDB.method,
-            //     requestType: 'json',
-            //     data: {
-            //         pageNo: this.pageInfo.pageNo,
-            //         pageSize: this.pageInfo.pageSize,
-            //         conditionData: sendData
-            //     }
-            // }).then(
-            //     function(res) {
-            //         if (res.code === 0) {
-            //             var data = res.data || {};
-            //             self.tableData = data.data;
-            //             self.pageInfo.pageCurr = data.pageNum || self.pageInfo.pageCurr;
-            //             self.pageInfo.pagesCount = data.pages || self.pageInfo.pagesCount;
-            //         }
-            //     }
-            // ).catch(function(error) {
-            //     self.$store.commit('TOGGLE_DIALOG', error.message)
-            // })
+            // window.open('/public/excel/channel.xlsx', '_blank')
         }
     },
     components: {

@@ -6,7 +6,8 @@
                     <label class="is-info">{{item.name}}</label>
                     <input v-if="item.type==='number'" type="number" class="input form-input" :value="item.value" v-model.number="modelValue[item.id]">
                     <input v-if="item.type==='text'" type="text" class="input form-input" :value="item.value" v-model="modelValue[item.id]">
-                    <select v-if="item.type==='select'" class="form-input" :value="item.value" v-model="modelValue[item.id]">
+                    <select v-if="item.type==='select'" class="form-input" :value="item.value" v-model="modelValue[item.id]" @change='selectCall(item)'>
+                        <!-- <option value="">全部</option> -->
                         <option v-for="op in item.option" :value="op.value">{{op.text||op.name}}</option>
                     </select>
                     <select-single v-if="item.type==='select-single'" class="form-input" :optionsdata="item.option" :selecteddata="item.value" :selectid="item.id" @selected="multipleCallback">
@@ -148,11 +149,19 @@ export default {
             }
             return result;
         },
+        selectCall: function(item) {
+            this.$emit("eventHandle", {
+                type: 'selected',
+                item: item,
+                id: item.id,
+                value: this.modelValue
+            })
+        },
         multipleCallback: function(item) {
-            var self = this;
-            self.modelValue[item.id] = this.getMultiValue(item.value);
-            self.$emit("eventHandle", {
+            this.modelValue[item.id] = this.getMultiValue(item.value);
+            this.$emit("eventHandle", {
                 type: 'multiple-selected',
+                id: item.id,
                 value: this.modelValue
             })
         },
@@ -214,9 +223,9 @@ export default {
         .btn-primary {
             margin: 0 10px 0 0;
         }
-        .btn-search {
+/*        .btn-search {
             margin: 0 20px 0 0;
-        }
+        }*/
     }
     .functional-select-wrapper {
         display: inline-block;
