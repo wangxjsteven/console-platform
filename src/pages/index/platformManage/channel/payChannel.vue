@@ -83,7 +83,6 @@ module.exports = {
                 }]
             },
             tableTitle: {
-                colStyle: 'average',
                 ordinal: true, //配置序号是否展示
                 tits: [{
                     name: "渠道码",
@@ -94,7 +93,7 @@ module.exports = {
                     id: 'isPaid',
                     type: 'default'
                 }, {
-                    name: "平台纬度",
+                    name: "平台维度",
                     id: 'dimension'
                 }, {
                     name: "第一级渠道",

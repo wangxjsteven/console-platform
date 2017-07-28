@@ -5,16 +5,10 @@
 </style>
 <template>
     <div>
-        <table-page v-show='pageLebal==="group"'
-         :tableDB='tableDB'
-         :refresh='refreshTableFlag'
-         :itemOptions='itemOptions'
-         :tableTitle='tableTitle'
-         @itemEvent='itemEvent'
-         @tableEvent='tableEvent'>
+        <table-page v-show='pageLebal==="group"' :tableDB='tableDB' :refresh='refreshTableFlag' :itemOptions='itemOptions' :tableTitle='tableTitle' :exportDB='exportDB' @itemEvent='itemEvent' @tableEvent='tableEvent'>
         </table-page>
         <!-- 查看组详情 -->
-        <group-detail v-if='pageLebal==="detail"' :groupId="group.groupId" @detailEvent='detailEvent'></group-detail>
+        <group-detail v-if='pageLebal==="detail"' :groupId="groupId" @detailEvent='detailEvent'></group-detail>
         <!-- 上传模板提示框 -->
         <upload :show="upload.show" :clipOptions='clipOptions' :modelUrl='modelUrl' @hide='upload.show=false' @uploadEvent='uploadEvent'>
             <div v-if='group.groupId'>
@@ -53,6 +47,11 @@ module.exports = {
                 groupName: '',
                 remark: ''
             },
+            groupId:0,
+            clipDB: {
+                'addGroups': '/newconsole/consoleapi/channel/addChannelGroups',
+                'addForGroup': '/newconsole/consoleapi/channel/addChannelForGroup'
+            },
             clipOptions: {
                 url: '/newconsole/consoleapi/channel/addChannelGroups',
                 paramName: 'file',
@@ -65,11 +64,12 @@ module.exports = {
             pageLebal: 'group',
 
             // table配置
-            refreshTableFlag:0,
+            refreshTableFlag: 0,
             tableDB: {
                 url: '/newconsole/consoleapi/channel/getChannelGroups',
                 method: 'post'
             },
+            exportDB: '/newconsole/consoleapi/channel/exportChannelGroups',
             optionDB: {
                 url: '/newconsole/consoleapi/channel/channelGroupsList',
                 method: 'post'
@@ -82,7 +82,7 @@ module.exports = {
                     id: 'groupName',
                     type: 'select-multi',
                     option: [],
-                    value: ''
+                    value: []
                 }],
                 buttons: [{
                     name: "搜 索",
@@ -102,7 +102,6 @@ module.exports = {
                 }]
             },
             tableTitle: {
-                colStyle: 'average',
                 ordinal: true, //配置序号是否展示
                 tits: [{
                     name: "渠道组号",
@@ -137,7 +136,7 @@ module.exports = {
             date: ''
         }
     },
-    mounted(){
+    mounted() {
         this.getGroupData();
     },
     methods: {
@@ -151,6 +150,7 @@ module.exports = {
                 groupName: '',
                 remark: ''
             };
+            this.clipOptions.url = opts ? this.clipDB.addForGroup : this.clipDB.addGroups;
             this.clipOptions.params = opts ? { groupId: opts.groupId } : {};
             this.clipOptions.inputAdd = opts ? [] : [{
                 type: 'text',
@@ -169,7 +169,7 @@ module.exports = {
             };
         },
         getGroupData() {
-            let self=this;
+            let self = this;
             this.$ajax({
                 url: this.optionDB.url,
                 method: this.optionDB.method
@@ -210,6 +210,7 @@ module.exports = {
         tableEvent(opts) {
             switch (opts.type) {
                 case 'view':
+                    this.groupId = opts.target.groupId;
                     this.setLebal('detail');
                     break;
                 case 'add':

@@ -176,8 +176,11 @@ ul li i{
     max-height: 60px;
     overflow: hidden!important;
 }
-
-
+.nav-sidebar{
+  .fa {
+      margin-right: 5px;
+  }
+}
 
 
 @media (min-width: 768px) {

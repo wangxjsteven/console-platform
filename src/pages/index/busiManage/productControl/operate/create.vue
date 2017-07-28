@@ -101,7 +101,7 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-4 col-sm-4">
-                    <button type="submit" v-show="$checkAuth('add')" class="btn btn-primary" @click.prevent='submit'>预约债权</button>
+                    <button type="submit" v-show="$checkAuth('add')" class="btn btn-primary" @click.prevent='submit' :disabled="disabled">预约债权</button>
                     <button type="submit" class="btn btn-default" @click.prevent='back'>取消</button>
                 </div>
             </div>
@@ -165,7 +165,8 @@ export default {
             totalAmount: '',
             quota: 0,
             showState: 'SHOW',
-            maxRaiseAmount: 0
+            maxRaiseAmount: 0,
+            disabled:false
         }
     },
     components: {
@@ -319,6 +320,7 @@ export default {
                 this.$store.commit('TOGGLE_DIALOG', checkResult);
                 return;
             }
+            this.disabled=true;
             this.$ajax({
                 url: DB.createProduct.url,
                 method: DB.createProduct.method,
@@ -336,6 +338,7 @@ export default {
                     showState: this.showState
                 }
             }).then(function(res) {
+                self.disabled=false;
                 self.$store.commit('TOGGLE_DIALOG', {
                     message: '提交成功',
                     ok: function() {
@@ -347,6 +350,8 @@ export default {
                         });
                     }
                 });
+            }).catch(function(){
+                self.disabled=false;
             })
         },
         back: function() {

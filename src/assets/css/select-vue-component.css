@@ -114,6 +114,9 @@
 	box-sizing: border-box;
 	text-indent: 5px;
 	padding: 6px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .functional-select-wrapper .options-container .options-ul-list li:hover{

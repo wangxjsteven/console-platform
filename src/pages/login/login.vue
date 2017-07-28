@@ -91,7 +91,7 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">验证码</label>
                 <div class="col-sm-5">
-                    <input v-model="validateCode" v-on:keyup.13="submit" type="text" name="validateCode" class="form-control" placeholder="请输入验证码">
+                    <input v-model="validateCode" @keyup.enter='submit' type="text" name="validateCode" class="form-control" placeholder="请输入验证码">
                 </div>
                 <div class="verify-code">
                     <img :src="vali" @click="refreshVali">

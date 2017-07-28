@@ -9,27 +9,27 @@ module.exports = {
     //localdata 本地数据
     //serverdata 服务器数据
     //mockjs 本地 mockjs
-    mode: 'serverdata', //'localdata',
+    mode: 'localdata',
     env: 'dev',
 
 
     //指定测试环境数据
     //必要条件：localCgi = 0 && localVmData = 0
     hosts: [{
-        ip: '10.1.10.13',
+        ip: '10.1.10.57',
         selected: 0,
-        desc: '测试环境13',
-        label: '.13',
+        desc: '测试环境57',
+        label: '.57',
         proxyPort: {
             pc: 8080,
             h5: 8081,
             console: 8080
         }
     }, {
-        ip: '10.1.60.62',
+        ip: '192.168.1.5',
         selected: 1,
-        desc: '测试环境62',
-        label: '.62',
+        desc: '测试环境5',
+        label: '.5',
         proxyPort: {
             pc: 8080,
             h5: 8081,

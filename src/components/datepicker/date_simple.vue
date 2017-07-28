@@ -60,7 +60,7 @@ export default {
             },
             // 为测试添加istest=1参数
             // limitOpt: location.hash.indexOf('istest=1') > -1 ? [] : this.limit
-            limitOpt: []
+            limitOpt: this.limit
         }
     },
     components: {

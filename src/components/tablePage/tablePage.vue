@@ -19,6 +19,12 @@ export default {
         tableDB: {
             type: Object,
             default: function() {
+                return { url: '', method: 'post', data: {} };
+            }
+        },
+        params:{
+            type: Object,
+            default: function() {
                 return {};
             }
         },
@@ -80,10 +86,15 @@ export default {
         });
     },
     watch: {
-        'refresh': function() {
+        refresh: function() {
             // 按权限检测item列表中的button是否显示
             // this.checkBtnAuth();
 
+            this.loadTableData({
+                pageNo: 1
+            });
+        },
+        'params': function() {
             this.loadTableData({
                 pageNo: 1
             });
@@ -125,16 +136,17 @@ export default {
             let sendData = this.searchResult = opts.data || this.searchResult;
             opts.pageNo && (this.pageInfo.pageNo = opts.pageNo);
             opts.pageSize && (this.pageInfo.pageSize = opts.pageSize);
-
+            let data = {
+                pageNo: this.pageInfo.pageNo,
+                pageSize: this.pageInfo.pageSize,
+                conditionData: sendData
+            };
+            Object.assign(data, this.params);
             this.$ajax({
                 url: this.tableDB.url,
                 method: this.tableDB.method,
                 requestType: 'json',
-                data: {
-                    pageNo: this.pageInfo.pageNo,
-                    pageSize: this.pageInfo.pageSize,
-                    conditionData: sendData
-                }
+                data: data
             }).then(
                 function(res) {
                     if (res.code === 0) {
@@ -142,6 +154,7 @@ export default {
                         self.tableData = data.data;
                         self.pageInfo.pageCurr = data.pageNum || self.pageInfo.pageCurr;
                         self.pageInfo.pagesCount = data.pages || self.pageInfo.pagesCount;
+                        self.pageInfo.totalRecords = data.totalRecords || self.pageInfo.totalRecords;
                     }
                 }
             ).catch(function(error) {

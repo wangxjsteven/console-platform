@@ -54,7 +54,12 @@
         </div>
         <div class="debt-footer">
             <slot name='debt-info'></slot>
-            <pagination :cur.sync="pageInfo.pageCurr" :all.sync="pageInfo.pagesCount" @btnClick="pageBtnClick" v-if="pageshide? 0: 1"></pagination>
+            <pagination
+             :cur.sync="pageInfo.pageCurr"
+             :all.sync="pageInfo.pagesCount"
+             :allRecords.sync="pageInfo.totalRecords"
+             @btnClick="pageBtnClick"
+             v-if="pageshide? 0: 1"></pagination>
         </div>
     </div>
 </template>

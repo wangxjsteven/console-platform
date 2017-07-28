@@ -206,7 +206,7 @@ export default {
         input,
         select {
             //border-radius: 0 3px 3px 0;
-            width: 150px;
+            width: 200px;
             height: 24px;
         }
         label.is-info {
@@ -230,7 +230,7 @@ export default {
     .functional-select-wrapper {
         display: inline-block;
         position: relative;
-        width: 150px;
+        width: 200px;
         height: 24px;
         border: none;
         padding: 0;
@@ -254,9 +254,5 @@ export default {
             border-color: #7a9cd3;
         }
     }
-}
-
-.fa {
-    margin-right: 5px;
 }
 </style>

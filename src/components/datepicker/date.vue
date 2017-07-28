@@ -100,7 +100,7 @@ export default {
             // },
             // 为测试添加istest=1参数,不限制日期选择
             // limitOpt: location.hash.indexOf('istest=1') > -1 ? [] : this.datelimit
-            limitOpt: []
+            limitOpt: this.datelimit
         }
     },
     components: {

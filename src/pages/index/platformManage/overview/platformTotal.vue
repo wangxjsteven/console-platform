@@ -352,7 +352,7 @@ export default {
                     };
 
                     for (var i = 0, items = tables.tableData, max = items.length; i < max; i++) {
-                        items[i].show_time = format(items[i].createTime);
+                        items[i].show_time = format(items[i].dataTime);
                     }
                     addcomponent && require(['@/components/table/table.vue'], resolve);
                 },

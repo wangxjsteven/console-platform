@@ -5,19 +5,22 @@
 </style>
 <template>
     <div>
-        <table-page :tableDB='tableDB' :itemOptions='itemOptions' :tableTitle='tableTitle' @itemEvent='itemEvent' @tabelEvent='tableHandle'></table-page>
+        <table-page :tableDB='tableDB' :params='params' :itemOptions='itemOptions' :tableTitle='tableTitle' @itemEvent='itemEvent' @tabelEvent='tableHandle'></table-page>
     </div>
 </template>
 <script>
 import pageHead from 'components/pageHead';
 import tablePage from 'components/tablePage/tablePage.vue'
 module.exports = {
+    props: ['groupId'],
     data: function() {
-        props: ['groupId']
         return {
             tableDB: {
                 url: '/newconsole/consoleapi/channel/getChannelGroupsInfo',
                 method: 'post'
+            },
+            params: {
+                groupId: this.groupId
             },
             itemOptions: {
                 colCount: 3,
@@ -28,7 +31,7 @@ module.exports = {
                     type: 'text',
                     value: ''
                 }, {
-                    name: "平台纬度",
+                    name: "平台维度",
                     id: 'dimension',
                     type: 'select',
                     option: [{
@@ -69,7 +72,7 @@ module.exports = {
                     icon: "search",
                     type: "search",
                     btnPower: true
-                },{
+                }, {
                     name: "返 回",
                     icon: "rotate-left",
                     type: "view",
@@ -88,7 +91,7 @@ module.exports = {
                     id: 'isPaid',
                     type: 'default'
                 }, {
-                    name: "平台纬度",
+                    name: "平台维度",
                     id: 'dimension'
                 }, {
                     name: "第一级渠道",
@@ -107,10 +110,12 @@ module.exports = {
     },
     watch: {
         groupId: function() {
+            // this.tableDB.data.groupId = this.groupId;
             // this.getChannels();
         }
     },
     mounted: function() {
+        // this.tableDB.data.groupId = this.groupId;
         // this.getChannels();
     },
     methods: {
@@ -121,8 +126,7 @@ module.exports = {
                     break;
             }
         },
-        uploadEvent: function(opts) {
-        },
+        uploadEvent: function(opts) {},
         tableHandle: function(opts) {
             switch (opts.type) {
                 case 'multiple-selected':

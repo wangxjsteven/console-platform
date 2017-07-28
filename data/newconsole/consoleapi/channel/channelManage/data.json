@@ -3,9 +3,9 @@
     "message": "操作成功",
     "data": {
         "pageNum": 1,
-        "pageSize": 20,
-        "pages": 1,
-        "totalRecords": 1,
+        "pageSize": 10,
+        "pages": 2,
+        "totalRecords": 12,
         "data": [{
             "channelId": 0,
             "dimension": "APP",

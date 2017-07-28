@@ -89,6 +89,7 @@ export default {
     watch: {
         show() {
             this.progressText = '';
+            this.modelValue={}
         }
     },
     methods: {
@@ -229,7 +230,7 @@ export default {
     .md-upload-buttons {
         position: absolute;
         bottom: 16px;
-        right: 0;
+        right: 16px ;
         .btn {
             min-width: auto;
             margin-right: auto;

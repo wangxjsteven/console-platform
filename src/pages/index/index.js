@@ -2,6 +2,11 @@ import 'assets/fonts/css/font-awesome.min.css';
 import 'assets/css/main.scss';
 
 import Vue from 'vue';
+// element-ui组件
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-default/index.css'
+
+Vue.use(ElementUI);
 
 import axios from 'axios';
 import VueAxios from 'vue-axios'

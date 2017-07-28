@@ -32,6 +32,8 @@
             );
  */
 
+import util from 'assets/js/util.js';
+
 var ajax = {
     install: function(Vue, opts) {
 
@@ -39,6 +41,12 @@ var ajax = {
         Vue.mixin({
             created: function() {
                 var self = this;
+                // 导出excel封装
+                this.$export = function(opts) {
+                    window.open(this.exportDB + '?' + util.jsonBody2Str(opts.value), '_blank');
+                }
+
+                // ajax请求封装
                 this.$ajax = function(opts) {
                     var promise = new Promise(function(resolve, reject) {
                         var config = Object.assign({}, {
@@ -108,13 +116,13 @@ var ajax = {
 };
 
 function getHeaders(type) {
-    switch (type) {
+    let _type = type || 'json';
+    switch (_type) {
         case 'form':
             return {
                 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
             }
         case 'json':
-        case '':
             return {
                 'x-console-json': 'true',
                 'Content-Type': 'application/json'

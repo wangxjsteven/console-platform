@@ -7,17 +7,19 @@
             </li>
             <li :class="setButtonClass(1)"><a v-on:click="nextPage(cur)">&raquo;</a></li>
             <li>第<i class="total-pages" v-text="currNum"></i>页/共<i class="total-pages" v-text="all"></i>页</li>
+            <li v-show='allRecords'>(共<i class="total-pages" v-text="allRecords"></i>条记录)</li>
         </ul>
     </div>
 </template>
 <script>
     export default{
         data: function(){
+            console.log(this.curr);
             return {
                 currNum: this.cur
             }
         },
-        props: ['cur', 'all'],
+        props: ['cur', 'all','allRecords'],
         watch:{
             "cur":function(){
                 this.currNum=this.cur;
